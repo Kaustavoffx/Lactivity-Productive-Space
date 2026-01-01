@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['assets/vite.svg'],
+      includeAssets: ['assets/pwa-192x192.png', 'assets/pwa-512x512.png'],
       manifest: {
         name: 'Lactivity',
         short_name: 'Lactivity',
@@ -22,12 +22,12 @@ export default defineConfig({
         orientation: 'portrait',
         icons: [
           {
-            src: 'assets/Pwa-192x192.png',
+            src: 'assets/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'assets/Pwa-512x512.png',
+            src: 'assets/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
