@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Keygen';
+  src: url('./assets/Keygen-8OA42.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  font-family: 'Keygen', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+@layer base {
+  :root {
+    --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  /* Theme 1: Immense (The Gold Standard) */
+  [data-theme='immense'] {
+    --bg-main: #000000;
+    --bg-gradient: linear-gradient(to bottom right, #000000, #2a1b15);
+    --text-main: #e2e8f0;
+    --accent: #d97706;
+    /* Amber */
+    --safe-bg: rgba(217, 119, 6, 0.15);
+    --border-color: rgba(139, 69, 19, 0.3);
+    --glass-tint: rgba(43, 26, 15, 0.4);
+  }
+
+  /* Theme 2: Breeze (Soft Peach/Pink) - Replaces Glacier */
+  [data-theme='glacier'] {
+    --bg-main: #fff1f2;
+    --bg-gradient: linear-gradient(to bottom right, #fff1f2, #ffedd5);
+    /* Rose to Peach */
+    --text-main: #4c0519;
+    /* Deep Rose/Burgundy Text */
+    --accent: #fb7185;
+    /* Soft Rose */
+    --safe-bg: rgba(251, 113, 133, 0.15);
+    --border-color: rgba(253, 164, 175, 0.4);
+    --glass-tint: rgba(255, 255, 255, 0.6);
+    --glass-border: 1px solid rgba(255, 228, 230, 0.8);
+    --glass-shadow: 0 8px 32px 0 rgba(253, 164, 175, 0.15);
+  }
+
+  /* Theme 3: Viper (Black/Green) - Replaces Sap */
+  [data-theme='viper'] {
+    --bg-main: #000000;
+    --bg-gradient: linear-gradient(to bottom right, #000000 20%, #052e16);
+    --text-main: #ecfccb;
+    --accent: #84cc16;
+    /* Lime */
+    --safe-bg: rgba(132, 204, 22, 0.15);
+    --border-color: rgba(132, 204, 22, 0.2);
+    --glass-tint: rgba(5, 46, 22, 0.5);
+  }
+
+  /* Theme 4: Abyss (Matured Deep Teal) */
+  [data-theme='abyss'] {
+    --bg-main: #020617;
+    --bg-gradient: linear-gradient(to bottom right, #020617 30%, #0f172a, #115e59);
+    /* Slate to Deep Teal */
+    --text-main: #cbd5e1;
+    /* Muted Slate Text */
+    --accent: #2dd4bf;
+    /* Teal (less neon than cyan) */
+    --safe-bg: rgba(45, 212, 191, 0.1);
+    --border-color: rgba(45, 212, 191, 0.15);
+    --glass-tint: rgba(15, 23, 42, 0.6);
+  }
+
+  /* Theme 5: Magma (Black/Red) - Replaces Fire */
+  [data-theme='magma'] {
+    --bg-main: #000000;
+    --bg-gradient: linear-gradient(to bottom right, #000000 20%, #450a0a);
+    --text-main: #fecaca;
+    --accent: #ef4444;
+    /* Red */
+    --safe-bg: rgba(239, 68, 68, 0.15);
+    --border-color: rgba(239, 68, 68, 0.3);
+    --glass-tint: rgba(69, 10, 10, 0.5);
+  }
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--text-main);
+  transition: all 0.5s ease;
+}
+
+.glass-panel {
+  background: var(--glass-tint);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.03);
+  border: var(--glass-border);
+  color: var(--text-main);
+}
+
+.glass-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
