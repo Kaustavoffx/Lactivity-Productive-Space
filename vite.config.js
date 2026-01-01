@@ -11,23 +11,23 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
-        name: 'Antigravity Time Tracker',
-        short_name: 'Antigravity',
-        description: 'Offline-capable recurring activity tracker',
-        theme_color: '#0f172a',
-        background_color: '#0f172a',
+        name: 'Lactivity',
+        short_name: 'Lactivity',
+        description: 'A local-first, offline-capable time tracker',
+        theme_color: '#000000',
+        background_color: '#000000',
         display: 'standalone',
         scope: '/',
         start_url: '/',
         orientation: 'portrait',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'Pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'Pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
