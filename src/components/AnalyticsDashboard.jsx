@@ -179,8 +179,8 @@ export default function AnalyticsDashboard({ entries, activities, survivalConfig
                 </div>
             </div>
 
-            <div className="flex-1 p-4 min-h-[300px]">
-                <ResponsiveContainer width="100%" height="100%" minHeight={300}>
+            <div className="flex-1 p-4 w-full h-[400px] min-h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
                     {activeTab === 'pie' ? (
                         <PieChart>
                             <Pie

@@ -25,27 +25,69 @@
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 
-  /* Theme 1: Immense (The Gold Standard) */
+  /* ATMOSPHERE 1: SINGULARITY (Default) */
+  [data-theme="singularity"] {
+    --bg-gradient: radial-gradient(circle at top center, #1e1b4b, #020617);
+    --accent: #8b5cf6;
+    --text-main: #cbd5e1;
+    --glass-tint: rgba(30, 27, 75, 0.4);
+    --border-color: rgba(139, 92, 246, 0.2);
+    --safe-bg: rgba(139, 92, 246, 0.15);
+    --bg-card: #0f172a;
+  }
+
+  /* ATMOSPHERE 2: BIO-HAZARD (Toxic) */
+  [data-theme="biohazard"] {
+    --bg-gradient: radial-gradient(circle at top center, #022c22, #000000);
+    --accent: #10b981;
+    --text-main: #d1fae5;
+    --glass-tint: rgba(6, 78, 59, 0.4);
+    --border-color: rgba(16, 185, 129, 0.2);
+    --safe-bg: rgba(16, 185, 129, 0.15);
+    --bg-card: #022c22;
+  }
+
+  /* ATMOSPHERE 3: SOLARIS (Starlight) */
+  [data-theme="solaris"] {
+    --bg-gradient: radial-gradient(circle at top center, #451a03, #0f0505);
+    --accent: #f59e0b;
+    --text-main: #fef3c7;
+    --glass-tint: rgba(120, 53, 15, 0.3);
+    --border-color: rgba(245, 158, 11, 0.2);
+    --safe-bg: rgba(245, 158, 11, 0.15);
+    --bg-card: #280a00;
+  }
+
+  /* ATMOSPHERE 4: DEEP OCEAN (Midnight) */
+  [data-theme="deepocean"] {
+    --bg-gradient: radial-gradient(circle at top center, #0c4a6e, #020617);
+    --accent: #06b6d4;
+    --text-main: #cffafe;
+    --glass-tint: rgba(22, 78, 99, 0.4);
+    --border-color: rgba(6, 182, 212, 0.2);
+    --safe-bg: rgba(6, 182, 212, 0.15);
+    --bg-card: #083344;
+  }
+
+  /* LEGACY THEMES */
+
+  /* Theme: Immense (Amber) */
   [data-theme='immense'] {
     --bg-main: #000000;
     --bg-gradient: linear-gradient(to bottom right, #000000, #2a1b15);
     --text-main: #e2e8f0;
     --accent: #d97706;
-    /* Amber */
     --safe-bg: rgba(217, 119, 6, 0.15);
     --border-color: rgba(139, 69, 19, 0.3);
     --glass-tint: rgba(43, 26, 15, 0.4);
   }
 
-  /* Theme 2: Breeze (Soft Peach/Pink) - Replaces Glacier */
+  /* Theme: Breeze (Peach/Pink) */
   [data-theme='glacier'] {
     --bg-main: #fff1f2;
     --bg-gradient: linear-gradient(to bottom right, #fff1f2, #ffedd5);
-    /* Rose to Peach */
     --text-main: #4c0519;
-    /* Deep Rose/Burgundy Text */
     --accent: #fb7185;
-    /* Soft Rose */
     --safe-bg: rgba(251, 113, 133, 0.15);
     --border-color: rgba(253, 164, 175, 0.4);
     --glass-tint: rgba(255, 255, 255, 0.6);
@@ -53,43 +95,39 @@
     --glass-shadow: 0 8px 32px 0 rgba(253, 164, 175, 0.15);
   }
 
-  /* Theme 3: Viper (Black/Green) - Replaces Sap */
+  /* Theme: Viper (Neon Green) */
   [data-theme='viper'] {
     --bg-main: #000000;
     --bg-gradient: linear-gradient(to bottom right, #000000 20%, #052e16);
     --text-main: #ecfccb;
     --accent: #84cc16;
-    /* Lime */
     --safe-bg: rgba(132, 204, 22, 0.15);
     --border-color: rgba(132, 204, 22, 0.2);
     --glass-tint: rgba(5, 46, 22, 0.5);
   }
 
-  /* Theme 4: Abyss (Matured Deep Teal) */
+  /* Theme: Abyss (Deep Teal) */
   [data-theme='abyss'] {
     --bg-main: #020617;
     --bg-gradient: linear-gradient(to bottom right, #020617 30%, #0f172a, #115e59);
-    /* Slate to Deep Teal */
     --text-main: #cbd5e1;
-    /* Muted Slate Text */
     --accent: #2dd4bf;
-    /* Teal (less neon than cyan) */
     --safe-bg: rgba(45, 212, 191, 0.1);
     --border-color: rgba(45, 212, 191, 0.15);
     --glass-tint: rgba(15, 23, 42, 0.6);
   }
 
-  /* Theme 5: Magma (Black/Red) - Replaces Fire */
+  /* Theme: Magma (Red) */
   [data-theme='magma'] {
     --bg-main: #000000;
     --bg-gradient: linear-gradient(to bottom right, #000000 20%, #450a0a);
     --text-main: #fecaca;
     --accent: #ef4444;
-    /* Red */
     --safe-bg: rgba(239, 68, 68, 0.15);
     --border-color: rgba(239, 68, 68, 0.3);
     --glass-tint: rgba(69, 10, 10, 0.5);
   }
+
 }
 
 body {

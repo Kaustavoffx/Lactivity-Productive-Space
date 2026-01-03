@@ -1,15 +1,18 @@
 import { useState } from 'react';
-import { format, startOfWeek, addDays, isBefore, startOfToday, isSameDay } from 'date-fns';
-import { Plus, Trash2, ChevronLeft, ChevronRight, Scaling } from 'lucide-react';
+import { format, startOfWeek, addDays, isBefore, startOfToday, isSameDay, isAfter, subDays } from 'date-fns';
+import { Plus, Trash2, ChevronLeft, ChevronRight, Scaling, Coins, Lock, Unlock } from 'lucide-react';
+import ConfirmationModal from './ConfirmationModal';
 import clsx from 'clsx';
 
 export default function TrackerGrid({
     activities, entries, logActivity, addActivity, deleteActivity,
-    currentDate, setCurrentDate, columnSize, setColumnSize
+    currentDate, setCurrentDate, columnSize, setColumnSize,
+    tokens, consumeToken
 }) {
     const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 }); // Monday start
     const weekDays = Array.from({ length: 7 }).map((_, i) => addDays(weekStart, i));
     const today = startOfToday();
+    const yesterday = subDays(today, 1);
 
     const handlePrevWeek = () => setCurrentDate(d => addDays(d, -7));
     const handleNextWeek = () => setCurrentDate(d => addDays(d, 7));
@@ -18,6 +21,13 @@ export default function TrackerGrid({
     const [newActivityName, setNewActivityName] = useState('');
     const [isAdding, setIsAdding] = useState(false);
     const [isResizing, setIsResizing] = useState(false);
+    const [unlockedCells, setUnlockedCells] = useState({});
+
+    // Modal State
+    const [modalConfig, setModalConfig] = useState({ isOpen: false, type: 'warning', title: '', message: '', onConfirm: () => { } });
+
+    const openModal = (config) => setModalConfig({ ...config, isOpen: true });
+    const closeModal = () => setModalConfig(prev => ({ ...prev, isOpen: false }));
 
     const handleAddSubmit = (e) => {
         e.preventDefault();
@@ -49,25 +59,34 @@ export default function TrackerGrid({
                     )}
                 </div>
 
-                {/* Column Sizer */}
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setIsResizing(!isResizing)}
-                        className={clsx("p-2 rounded-lg transition-colors", isResizing ? "bg-white/10 text-[var(--accent)]" : "text-gray-400 hover:text-white")}
-                        title="Adjust Column Size"
-                    >
-                        <Scaling className="w-4 h-4" />
-                    </button>
-                    {isResizing && (
-                        <input
-                            type="range"
-                            min="80"
-                            max="300"
-                            value={columnSize}
-                            onChange={(e) => setColumnSize(parseInt(e.target.value))}
-                            className="w-24 h-1 bg-[var(--border-color)] rounded-lg appearance-none cursor-pointer accent-[var(--accent)]"
-                        />
-                    )}
+                <div className="flex items-center gap-4">
+                    {/* Token Display */}
+                    <div className="flex items-center gap-2 px-3 py-1.5 glass-input rounded-lg border border-[var(--border-color)] bg-amber-500/5">
+                        <Coins className={clsx("w-4 h-4", tokens.count > 0 ? "text-amber-400" : "text-gray-500")} />
+                        <span className={clsx("font-bold font-mono", tokens.count > 0 ? "text-white" : "text-gray-500")}>{tokens.count}</span>
+                        <span className="text-xs opacity-50">/ 3</span>
+                    </div>
+
+                    {/* Column Sizer */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setIsResizing(!isResizing)}
+                            className={clsx("p-2 rounded-lg transition-colors", isResizing ? "bg-white/10 text-[var(--accent)]" : "text-gray-400 hover:text-white")}
+                            title="Adjust Column Size"
+                        >
+                            <Scaling className="w-4 h-4" />
+                        </button>
+                        {isResizing && (
+                            <input
+                                type="range"
+                                min="80"
+                                max="300"
+                                value={columnSize}
+                                onChange={(e) => setColumnSize(parseInt(e.target.value))}
+                                className="w-24 h-1 bg-[var(--border-color)] rounded-lg appearance-none cursor-pointer accent-[var(--accent)]"
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
 
@@ -155,19 +174,62 @@ export default function TrackerGrid({
                                         const isActive = value > 0;
 
                                         return (
-                                            <td key={activity.id} className="p-2 relative">
+                                            <td
+                                                key={activity.id}
+                                                className="p-2 relative group"
+                                                onClick={(e) => {
+                                                    const cellKey = `${dateStr}_${activity.id}`;
+                                                    const isFuture = isAfter(day, today); // strict future handles everything after today
+                                                    // "Time Travel" Lock: Only lock days BEFORE yesterday. Yesterday is free to edit.
+                                                    const isLockedPast = isBefore(day, yesterday) && !unlockedCells[cellKey];
+
+                                                    if (isFuture) return;
+
+                                                    if (isLockedPast) {
+                                                        e.stopPropagation();
+                                                        if (tokens.count > 0) {
+                                                            openModal({
+                                                                title: 'Use Token?',
+                                                                message: 'Using a token will unlock this cell for editing. You have ' + tokens.count + ' tokens remaining.',
+                                                                confirmText: 'Use 1 Token',
+                                                                type: 'warning',
+                                                                onConfirm: () => {
+                                                                    if (consumeToken()) {
+                                                                        setUnlockedCells(prev => ({ ...prev, [cellKey]: true }));
+                                                                    }
+                                                                }
+                                                            });
+                                                        } else {
+                                                            openModal({
+                                                                title: 'No Tokens Remaining',
+                                                                message: 'You have used all your daily tokens. You can no longer edit past activities today.',
+                                                                confirmText: 'Understood',
+                                                                cancelText: 'Close',
+                                                                type: 'warning',
+                                                                onConfirm: () => { }
+                                                            });
+                                                        }
+                                                    }
+                                                }}
+                                            >
                                                 <div className={clsx(
                                                     "relative w-full h-12 rounded-lg border transition-all duration-300 flex items-center justify-center overflow-hidden",
                                                     isActive
                                                         ? "border-[var(--accent)] shadow-[0_0_15px_rgba(255,255,255,0.1)] bg-[var(--accent)] bg-opacity-20"
-                                                        : "border-transparent glass-input hover:border-[var(--border-color)]"
+                                                        : "border-transparent glass-input hover:border-[var(--border-color)]",
+                                                    (isAfter(day, today) || (isBefore(day, yesterday) && !unlockedCells[`${dateStr}_${activity.id}`])) && "opacity-60"
                                                 )}>
+                                                    {isBefore(day, yesterday) && !unlockedCells[`${dateStr}_${activity.id}`] && (
+                                                        <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                                            <Lock className="w-4 h-4 text-white/70" />
+                                                        </div>
+                                                    )}
                                                     <input
                                                         type="number"
                                                         min="0"
                                                         max="24"
                                                         step="0.5"
-                                                        disabled={isPast}
+                                                        disabled={isAfter(day, today) || (isBefore(day, yesterday) && !unlockedCells[`${dateStr}_${activity.id}`])}
                                                         value={value}
                                                         onClick={(e) => e.stopPropagation()}
                                                         onChange={(e) => logActivity(dateStr, activity.id, e.target.value)}
@@ -176,7 +238,7 @@ export default function TrackerGrid({
                                                             // For contrast: Always use text-main unless active, then use brighter white if needed
                                                             // Actually, let's keep it simple: text-main is calculated for contrast in CSS.
                                                             isActive ? "text-[var(--text-main)] drop-shadow-md" : "text-gray-500",
-                                                            isPast ? "cursor-not-allowed opacity-50" : "cursor-text"
+                                                            (isAfter(day, today) || (isBefore(day, yesterday) && !unlockedCells[`${dateStr}_${activity.id}`])) ? "cursor-not-allowed" : "cursor-text"
                                                         )}
                                                     />
                                                 </div>
@@ -190,6 +252,12 @@ export default function TrackerGrid({
                     </tbody>
                 </table>
             </div>
+            {/* Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={modalConfig.isOpen}
+                onClose={closeModal}
+                {...modalConfig}
+            />
         </div>
     );
 }

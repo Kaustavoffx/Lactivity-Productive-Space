@@ -21,5 +21,31 @@ export const DEFAULT_SURVIVAL_CONFIG = {
 export const STORAGE_KEYS = {
     ACTIVITIES: 'lactivity-activities',
     ENTRIES: 'lactivity-entries',
-    SURVIVAL: 'lactivity-survival-config'
+    SURVIVAL: 'lactivity-survival-config',
+    TOKENS: 'lactivity-tokens',
+    ACHIEVEMENTS: 'lactivity-achievements'
+};
+
+export const BADGES = {
+    SPARK: {
+        id: 'spark',
+        label: 'The Spark',
+        description: 'Completed Day 1 (1st Strike)',
+        icon: 'Sparkles',
+        color: 'text-yellow-400',
+    },
+    MOMENTUM: {
+        id: 'momentum',
+        label: 'Momentum',
+        description: '3 Day Strike',
+        icon: 'Flame',
+        color: 'text-orange-500',
+    },
+    ORBIT: {
+        id: 'orbit',
+        label: 'Orbit',
+        description: '7 Day Strike',
+        icon: 'Orbit',
+        color: 'text-purple-500',
+    }
 };

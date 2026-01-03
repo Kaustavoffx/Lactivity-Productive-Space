@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { format } from 'date-fns';
 import useLocalStorage from './useLocalStorage';
 import { DEFAULT_SURVIVAL_CONFIG, STORAGE_KEYS, CHART_COLORS } from '../utils/constants';
 
@@ -6,6 +7,22 @@ export default function useAntigravityData() {
     const [survivalConfig, setSurvivalConfig] = useLocalStorage(STORAGE_KEYS.SURVIVAL, DEFAULT_SURVIVAL_CONFIG);
     const [activities, setActivities] = useLocalStorage(STORAGE_KEYS.ACTIVITIES, []);
     const [entries, setEntries] = useLocalStorage(STORAGE_KEYS.ENTRIES, {});
+    const [tokens, setTokens] = useLocalStorage(STORAGE_KEYS.TOKENS, { count: 3, lastReset: format(new Date(), 'yyyy-MM-dd') });
+
+    useEffect(() => {
+        const todayStr = format(new Date(), 'yyyy-MM-dd');
+        if (tokens.lastReset !== todayStr) {
+            setTokens({ count: 3, lastReset: todayStr });
+        }
+    }, [tokens.lastReset, setTokens]);
+
+    const consumeToken = useCallback(() => {
+        if (tokens.count > 0) {
+            setTokens(prev => ({ ...prev, count: prev.count - 1 }));
+            return true;
+        }
+        return false;
+    }, [tokens.count, setTokens]);
 
     const updateSurvivalConfig = (newConfig) => {
         setSurvivalConfig({ ...survivalConfig, ...newConfig });
@@ -91,6 +108,9 @@ export default function useAntigravityData() {
         currentTheme,
         updateTheme,
         columnSize,
-        setColumnSize
+        columnSize,
+        setColumnSize,
+        tokens,
+        consumeToken
     };
 }
